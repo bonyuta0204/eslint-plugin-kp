@@ -72,5 +72,25 @@ ruleTester.run("comment-refs", rule, {
         },
       ],
     },
+    {
+      code: `
+      const a: Ref<number> = ref(0)
+      `,
+      errors: [
+        {
+          message: "ref declaration must have comment",
+        },
+      ],
+    },
+    {
+      code: `
+      const a= ref<number>(0)
+      `,
+      errors: [
+        {
+          message: "ref declaration must have comment",
+        },
+      ],
+    },
   ],
 });
