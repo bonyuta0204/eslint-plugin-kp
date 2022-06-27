@@ -7,44 +7,70 @@
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
+// @see: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin-tslint/tests/index.spec.ts
+const { TSESLint } = require("@typescript-eslint/utils");
 
-const rule = require("../../../lib/rules/comment-refs"),
-  RuleTester = require("eslint").RuleTester;
+const rule = require("../../../lib/rules/comment-refs");
 
-const parserOptions = {
-  ecmaVersion: 2018,
-  sourceType: 'module'
-}
+const config = {
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: "module",
+  },
+  parser: require.resolve("@typescript-eslint/parser"),
+};
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester(config);
 ruleTester.run("comment-refs", rule, {
   valid: [
-        {
-      filename: 'test.vue',
+    {
       code: `
       // comment
       const a = ref()
       `,
-      parserOptions
-    }
+    },
+    {
+      code: `
+      /** comment */
+      const a = ref()
+      `,
+    },
+    {
+      code: `
+      /**
+       * comment
+       */
+      const a = ref()
+      `,
+    },
+    {
+      code: `
+      // comment
+      const a: Ref<number> = ref(0)
+      `,
+    },
+    {
+      code: `
+      // comment
+      const a= ref<number>(0)
+      `,
+    },
   ],
 
   invalid: [
-        {
-      filename: 'test.vue',
+    {
       code: `
       const a = ref()
       `,
-      parserOptions,
       errors: [
         {
-          message: 'ref declaration must have comment',
-        }
-      ]
-    }
+          message: "ref declaration must have comment",
+        },
+      ],
+    },
   ],
 });
