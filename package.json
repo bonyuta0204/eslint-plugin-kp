@@ -14,8 +14,11 @@
     "test": "mocha tests --recursive"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^5.29.0",
+    "@typescript-eslint/utils": "^5.29.0",
     "eslint-plugin-vue": "^8.5.0",
-    "requireindex": "^1.2.0"
+    "requireindex": "^1.2.0",
+    "typescript": "^4.7.4"
   },
   "devDependencies": {
     "eslint": "^8.0.1",
